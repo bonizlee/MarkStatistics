@@ -1,0 +1,24 @@
+{
+    "maxnumber" : 15,
+    "project" : "sec",
+    "subject" : [
+        {
+            "filename" : "A",
+            "judges" : 3,
+            "markcell" : "D12",
+            "calculate" : 1
+        },
+        {
+            "filename" : "B",
+            "judges" : 3,
+            "markcell" : "D16",
+            "calculate" : 1
+        },
+        {
+            "filename" : "C",
+            "judges" : 1,
+            "markcell" : "D19",
+            "calculate" : 1
+        }
+    ]
+}
