@@ -101,5 +101,6 @@ ENV/
 .mypy_cache/
 
 # excel file
-.xls
-.xlsx
+*.xls
+*.xlsx
+
