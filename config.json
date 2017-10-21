@@ -1,6 +1,7 @@
 {
     "maxnumber" : 15,
     "project" : "sec",
+    "filetype" : "xlsx",
     "subject" : [
         {
             "filename" : "A",

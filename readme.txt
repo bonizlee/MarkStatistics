@@ -1,6 +1,8 @@
-config.json配置格式
+使用记事本打开config.json，修改配置内容
+配置格式
 "maxnumber":最大工位号，注意是工位号，不是选手人数
 "project" :项目类文件名
+"filetype":文件扩展名，xls或者xlsx
 "subject" :数组表示分为多少个子评分项
 	"filename" : 子评分项组别名称
         "judges" : 该子项评委数

@@ -22,13 +22,15 @@ def init():
     PROJECT = COMMOM_DATA['project']
     global STUDENT_MARK
     STUDENT_MARK = [0 for i in range(MAXNUMBER)]
+    global FILETYPE
+    FILETYPE = '.'+COMMOM_DATA['filetype']
 
 def summary():      
     for subject in COMMOM_DATA['subject']:        
         judges = subject['judges']
         subjectmark =  [ [ 0 for i in range(MAXNUMBER) ] for j in range(judges) ]
         for n in range(0,judges):            
-            filename = PATH+PROJECT+subject['filename']+str(n+1)+'.xlsx'
+            filename = PATH+PROJECT+subject['filename']+str(n+1)+FILETYPE
             workbook = load_workbook(filename,data_only=True)
             sheetnames =workbook.get_sheet_names()
             sheet = workbook.get_sheet_by_name(sheetnames[0])
@@ -68,7 +70,7 @@ def without_max_min_average(  subjectmark,judges ):
         STUDENT_MARK[i] += sum - min -max / (judges -2)
 
 def write_excel():
-    filename = PATH+PROJECT + 'summary.xlsx'   
+    filename = PATH+PROJECT + 'summary'+FILETYPE   
     workbook = Workbook()
     sheet = workbook.get_active_sheet()
     sheet.cell(row=1,column=1).value='工位号'
