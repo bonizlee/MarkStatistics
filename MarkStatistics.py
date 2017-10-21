@@ -9,6 +9,7 @@ from openpyxl import load_workbook
 from openpyxl.utils import column_index_from_string
 import os.path
 
+#初始化
 def init():   
     global PATH
     PATH = os.path.dirname(os.path.realpath(__file__))+os.path.sep
@@ -25,6 +26,7 @@ def init():
     global FILETYPE
     FILETYPE = '.'+COMMOM_DATA['filetype']
 
+#读取统计
 def summary():      
     for subject in COMMOM_DATA['subject']:        
         judges = subject['judges']
@@ -46,8 +48,11 @@ def summary():
         if calc_type == 1:
             average(subjectmark,judges)
         elif calc_type == 2:
-            without_max_min_average(subjectmark,judges)         
+            without_max_min_average(subjectmark,judges)
+        elif calc_type == 3:
+            without_abs_max_average(subjectmark,judges)     
 
+#算术平均
 def average( subjectmark,judges ):    
     for i in range(0,MAXNUMBER):
         sum = 0
@@ -55,6 +60,7 @@ def average( subjectmark,judges ):
             sum += subjectmark[n][i]
         STUDENT_MARK[i] += sum / judges
 
+#去除最高和最低再求平均
 def without_max_min_average(  subjectmark,judges ):
     for i in range(0,MAXNUMBER):
         max = 0
@@ -69,6 +75,22 @@ def without_max_min_average(  subjectmark,judges ):
                 min = value
         STUDENT_MARK[i] += sum - min -max / (judges -2)
 
+#去除偏差最大的再求平均
+def without_abs_max_average( subjectmark,judges ):    
+    for i in range(0,MAXNUMBER):
+        jm = [0 for k in range(judges)]
+        for n in range(0,judges):
+            jm[n] = subjectmark[n][i]
+        ave = sum(jm) / len(jm)
+        maxabs = abs(ave-jm[0])
+        maxmark = jm[0]
+        for j in range(1,judges):
+            if maxabs < abs(ave-jm[j]) and maxmark > jm[j]:
+                maxabs = abs(ave-jm[j])
+                maxmark = jm[j]
+        STUDENT_MARK[i] += (sum(jm) - maxmark)/(judges - 1)
+        
+#写入excel文件
 def write_excel():
     filename = PATH+PROJECT + 'summary'+FILETYPE   
     workbook = Workbook()
