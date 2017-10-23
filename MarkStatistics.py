@@ -73,7 +73,7 @@ def without_max_min_average(  subjectmark,judges ):
                 max = value
             if value < min:
                 min = value
-        STUDENT_MARK[i] += sum - min -max / (judges -2)
+        STUDENT_MARK[i] += (sum - min -max) / (judges -2)
 
 #去除偏差最大的再求平均
 def without_abs_max_average( subjectmark,judges ):    
