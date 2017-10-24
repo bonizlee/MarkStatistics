@@ -11,9 +11,9 @@
         },
         {
             "filename" : "B",
-            "judges" : 3,
+            "judges" : 4,
             "markcell" : "D16",
-            "calculate" : 1
+            "calculate" : 3
         },
         {
             "filename" : "C",

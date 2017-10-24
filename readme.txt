@@ -7,7 +7,7 @@
 	"filename" : 子评分项组别名称
         "judges" : 该子项评委数
         "markcell" : 第一个成绩所在单元格的标号
-        "calculate" : 汇总方式。1为算术平均，2为去除最高最低再平均
+        "calculate" : 汇总方式。1为算术平均，2为去除最高最低再平均,3为去除偏差最厉害的一个成绩，剩余求平均
 
 评分表格式命名  project+filename+judge序号
 
@@ -15,6 +15,7 @@
 {
     "maxnumber" : 15,
     "project" : "sec",
+    "filetype" : "xlsx"
     "subject" : [
         {
             "filename" : "A",

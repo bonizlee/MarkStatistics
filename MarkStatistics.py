@@ -63,16 +63,16 @@ def average( subjectmark,judges ):
 #去除最高和最低再求平均
 def without_max_min_average(  subjectmark,judges ):
     for i in range(0,MAXNUMBER):
-        max = 0
-        sum = 0
-        min = 0
-        for n in range(0,judges):
+        max = subjectmark[0][i]
+        sum = subjectmark[0][i]
+        min = subjectmark[0][i]
+        for n in range(1,judges):
             value = subjectmark[n][i]
             sum += value
             if value > max:
                 max = value
-            if value < min:
-                min = value
+            elif value < min:
+                min = value       
         STUDENT_MARK[i] += (sum - min -max) / (judges -2)
 
 #去除偏差最大的再求平均
@@ -81,25 +81,33 @@ def without_abs_max_average( subjectmark,judges ):
         jm = [0 for k in range(judges)]
         for n in range(0,judges):
             jm[n] = subjectmark[n][i]
-        ave = sum(jm) / len(jm)
-        maxabs = abs(ave-jm[0])
-        maxmark = jm[0]
+        average_mark = sum(jm) / len(jm)               
+        max_abs = abs(average_mark-jm[0])
+        max_mark = jm[0]
         for j in range(1,judges):
-            if maxabs < abs(ave-jm[j]) and maxmark > jm[j]:
-                maxabs = abs(ave-jm[j])
-                maxmark = jm[j]
-        STUDENT_MARK[i] += (sum(jm) - maxmark)/(judges - 1)
+            if max_abs < abs(average_mark-jm[j]) and max_mark > jm[j]:
+                max_abs = abs(average_mark-jm[j])
+                max_mark = jm[j]
+        STUDENT_MARK[i] += (sum(jm) - max_mark)/(judges - 1)
         
 #写入excel文件
 def write_excel():
     filename = PATH+PROJECT + 'summary'+FILETYPE   
     workbook = Workbook()
     sheet = workbook.get_active_sheet()
-    sheet.cell(row=1,column=1).value='工位号'
-    sheet.cell(row=1,column=2).value='成绩'
+    sheet.cell(row=1,column=1).value = '工位号'
+    sheet.cell(row=1,column=2).value = '成绩'
+    sheet.cell(row=1,column=3).value = '名次'
+    first_mark_cell = sheet.cell(row=2,column=2)
+    last_mark_cell = sheet.cell(row=len(STUDENT_MARK)+1,column=2)
     for i in range(len(STUDENT_MARK)):
-        sheet.cell(row=2+i,column=1).value= i+1
-        sheet.cell(row=2+i,column=2).value= STUDENT_MARK[i]
+        sheet.cell(row=2+i,column=1).value = i+1
+        sheet.cell(row=2+i,column=2).number_format = '0.0'
+        sheet.cell(row=2+i,column=2).value = STUDENT_MARK[i]
+        formual_str = '=rank('+sheet.cell(row=2+i,column=2).coordinate + ',' +\
+        first_mark_cell.column + '$2:' +\
+        last_mark_cell.column +'$'+str(last_mark_cell.row)+ ')'
+        sheet.cell(row=2+i,column=3).value = formual_str
     workbook.save(filename)
 
 if __name__ == "__main__":
