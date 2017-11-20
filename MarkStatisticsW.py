@@ -9,22 +9,47 @@ author:BonizLee
 """
 import json
 import sys
-from PyQt5.QtWidgets import QMainWindow,QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QAction, QTextEdit
+from PyQt5.QtGui import QIcon
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from openpyxl.utils import column_index_from_string
 import os.path
 
-class MarkStatisticsW(QMainWindow):
+class MarkStatisticsW(QMainWindow):   
 
-    def __init__():
-        super().__init__()
+    def __init__(self):
+        super().__init__()      
         self.initUI()
-        self.initUI()
+        self.initConfig()
 
+    textMessage = QTextEdit()
     def initUI(self):
-        calcAction = 
+        self.setWindowTitle('自动分数统计')
+        self.setGeometry(300,300,500,400)
+        self.setWindowIcon(QIcon('ms.ico'))        
+        self.setStatusBar('加载配置完成')
+        
+        calcAction = QAction(QIcon('calc.png'),'点击计算',self)
+        calcAction.setStatusTip('点击进行计算')
+        calcAction.triggered.connect(self.calc)
+        self.toolbar = self.addToolBar('点击计算')
+        self.toolbar.addAction(calcAction)
 
+        self.textMessage = QTextEdit()
+        self.textMessage.setReadOnly(True)     
+        self.show()
+        
+    # 设置状态栏
+    def setStatusBar(self,message):
+        self.statusBar().showMessage(message)
+    
+    # 计算
+    def calc(self):
+        self.summary()
+        self.setStatusBar('汇总统计')
+        self.write_excel()
+        self.setStatusBar('保存完成')
 
     #初始化配置
     def initConfig(self):   
@@ -33,7 +58,7 @@ class MarkStatisticsW(QMainWindow):
         fp = open(PATH+'config.json')    
         global COMMOM_DATA
         COMMOM_DATA = json.load(fp)
-        print(COMMOM_DATA)
+        #print(COMMOM_DATA)
         global MAXNUMBER 
         MAXNUMBER = COMMOM_DATA['maxnumber']
         global PROJECT 
@@ -44,7 +69,7 @@ class MarkStatisticsW(QMainWindow):
         FILETYPE = '.'+COMMOM_DATA['filetype']
 
     #读取统计
-    def summary():      
+    def summary(self):      
         for subject in COMMOM_DATA['subject']:        
             judges = subject['judges']
             subjectmark =  [ [ 0 for i in range(MAXNUMBER) ] for j in range(judges) ]
@@ -63,14 +88,14 @@ class MarkStatisticsW(QMainWindow):
             print(subjectmark)
             calc_type = subject['calculate']
             if calc_type == 1:
-                average(subjectmark,judges)
+                self.average(subjectmark,judges)
             elif calc_type == 2:
-                without_max_min_average(subjectmark,judges)
+                self.without_max_min_average(subjectmark,judges)
             elif calc_type == 3:
-                without_abs_max_average(subjectmark,judges)     
+                self.without_abs_max_average(subjectmark,judges)     
 
     #算术平均
-    def average( subjectmark,judges ):    
+    def average( self,subjectmark,judges ):    
         for i in range(0,MAXNUMBER):
             sum = 0
             for n in range(0,judges):
@@ -78,7 +103,7 @@ class MarkStatisticsW(QMainWindow):
             STUDENT_MARK[i] += sum / judges
 
     #去除最高和最低再求平均
-    def without_max_min_average(  subjectmark,judges ):
+    def without_max_min_average(  self,subjectmark,judges ):
         for i in range(0,MAXNUMBER):
             max = subjectmark[0][i]
             sum = subjectmark[0][i]
@@ -93,7 +118,7 @@ class MarkStatisticsW(QMainWindow):
             STUDENT_MARK[i] += (sum - min -max) / (judges -2)
 
     #去除偏差最大的再求平均
-    def without_abs_max_average( subjectmark,judges ):    
+    def without_abs_max_average( self,subjectmark,judges ):    
         for i in range(0,MAXNUMBER):
             jm = [0 for k in range(judges)]
             for n in range(0,judges):
@@ -108,7 +133,7 @@ class MarkStatisticsW(QMainWindow):
             STUDENT_MARK[i] += (sum(jm) - max_mark)/(judges - 1)
         
     #写入excel文件
-    def write_excel():
+    def write_excel( self):
         filename = PATH+PROJECT + 'summary'+FILETYPE   
         workbook = Workbook()
         sheet = workbook.get_active_sheet()
@@ -128,6 +153,10 @@ class MarkStatisticsW(QMainWindow):
         workbook.save(filename)
 
 if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    msw = MarkStatisticsW()
+    sys.exit(app.exec_())
+    """
     init()
     print('加载配置完成')
     summary()
@@ -139,3 +168,4 @@ if __name__ == "__main__":
         q = input("输入Q退出程序：")
         if q == 'Q' or q == 'q':
             break 
+    """
