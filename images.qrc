@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/" >
+    <file>ms.ico</file>
+    <file>Calc.png</file>   
+  </qresource>
+</RCC>

@@ -14,6 +14,8 @@ from openpyxl import Workbook
 from openpyxl import load_workbook
 from openpyxl.utils import column_index_from_string
 import os.path
+import images_qr
+from PyQt5.QtCore import QCoreApplication
 
 class MarkStatisticsW(QMainWindow):  
 
@@ -25,10 +27,10 @@ class MarkStatisticsW(QMainWindow):
     def initUI(self):
         self.setWindowTitle('自动分数统计')
         self.setGeometry(300, 300, 500, 400)
-        self.setWindowIcon(QIcon('ms.ico'))
+        self.setWindowIcon(QIcon(':/ms.ico'))
         self.setStatusBar('加载配置完成')
         
-        self.calcAction = QAction(QIcon('calc.png'), '点击计算', self)
+        self.calcAction = QAction(QIcon(':/Calc.png'), '点击计算', self)
         self.calcAction.setStatusTip('点击进行计算')
         self.calcAction.triggered.connect(self.calc)
         self.toolbar = self.addToolBar('点击计算')
