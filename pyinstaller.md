@@ -1,0 +1,1 @@
+pyinstaller --path C:\Python36\Lib\site-packages\PyQt5\Qt\bin -i ms.ico -Fw MarkStatisticsW.py
