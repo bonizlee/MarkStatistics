@@ -13,14 +13,16 @@ import os.path
 def init():   
     global PATH
     PATH = os.path.dirname(os.path.realpath(__file__))+os.path.sep
-    fp = open(PATH+'config.json')    
+    fp = open(PATH+'config.json',encoding='utf-8')    #先以utf-8形式读入json文件
     global COMMOM_DATA
-    COMMOM_DATA = json.load(fp)
+    jsonstr=fp.read()
+    COMMOM_DATA = json.loads(jsonstr)  #loads方法为将字符串转换为json对象
     print(COMMOM_DATA)
     global MAXNUMBER 
     MAXNUMBER = COMMOM_DATA['maxnumber']
     global PROJECT 
     PROJECT = COMMOM_DATA['project']
+    print(PROJECT)
     global STUDENT_MARK
     STUDENT_MARK = [0 for i in range(MAXNUMBER)]
     global FILETYPE

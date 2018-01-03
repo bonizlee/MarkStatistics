@@ -1,3 +1,6 @@
+#2018-01-03
+修复读取json内容包含中文，转为dist时成乱码问题
+
 #2017-11-28
 修改了图片信息，解决libpng warning: iCCP: known incorrect sRGB profile警告
 

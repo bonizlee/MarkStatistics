@@ -25,7 +25,7 @@ class MarkStatisticsW(QMainWindow):
         self.initConfig()
          
     def initUI(self):
-        self.setWindowTitle('自动分数统计')
+        self.setWindowTitle('自动分数统计v1.01')
         self.setGeometry(300, 300, 500, 400)
         self.setWindowIcon(QIcon(':/ms.ico'))
         self.setStatusBar('加载配置完成')
@@ -62,14 +62,15 @@ class MarkStatisticsW(QMainWindow):
         global PATH
         PATH = os.path.dirname(os.path.realpath(__file__))+os.path.sep
         try:
-            fp = open(PATH+'config.json') 
+            fp = open(PATH+'config.json',encoding='utf-8') 
+            jsonstr=fp.read()
         except IOError:
             self.errorDialog('打开配置文件错误')            
             QCoreApplication.quit()
 
         global COMMOM_DATA
         try:
-            COMMOM_DATA = json.load(fp)
+            COMMOM_DATA = json.loads(jsonstr)  #loads方法为将字符串转换为json对象
         except Exception:
             self.errorDialog('读取配置错误')            
             QCoreApplication.quit()
